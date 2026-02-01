@@ -20,6 +20,8 @@ export default function ChatPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [searchResults, setSearchResults] = useState([]);
 
+    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
     // const chatId = "6960fe42e8af2d609cb551ab";
 
     useEffect(() => {
@@ -29,8 +31,15 @@ export default function ChatPage() {
             router.push("/login");
             return;
         }
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        setUserId(payload.id);
+        // const payload = JSON.parse(atob(token.split(".")[1]));
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            setUserId(payload.id);
+        } catch {
+            localStorage.removeItem("token");
+            router.push("/login");
+        }
+
     }, [router]);
 
     useEffect(() => {
@@ -72,7 +81,7 @@ export default function ChatPage() {
             const token = localStorage.getItem("token");
 
             const res = await axios.get(
-                `http://localhost:5000/api/message/${selectedChatId}`, {
+                `${API_URL}/api/message/${selectedChatId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -106,7 +115,7 @@ export default function ChatPage() {
             formData.append("chatId", selectedChatId);
 
             const res = await axios.post(
-                "http://localhost:5000/api/message/image",
+                `${API_URL}/api/message/image`,
                 formData,
                 {
                     headers: {
@@ -152,9 +161,10 @@ export default function ChatPage() {
         const fetchChats = async () => {
             const token = localStorage.getItem("token");
 
-            const res = await axios.get("http://localhost:5000/api/chat", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await axios.get(
+                `${API_URL}/api/chat`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
 
             setChats(res.data);
         };
@@ -168,7 +178,7 @@ export default function ChatPage() {
         const fetchUsers = async () => {
             const token = localStorage.getItem("token");
             const res = await axios.get(
-                `http://localhost:5000/api/users?search=${searchTerm}`,
+                `${API_URL}/api/users?search=${searchTerm}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setSearchResults(res.data);
@@ -179,8 +189,9 @@ export default function ChatPage() {
 
     const startChat = async (otherUserId) => {
         const token = localStorage.getItem("token");
+
         const res = await axios.post(
-            "http://localhost:5000/api/chat",
+            `${API_URL}/api/chat`,
             { userId: otherUserId },
             { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -294,7 +305,7 @@ export default function ChatPage() {
                                     <>
                                         <br />
                                         <img
-                                            src={`http://localhost:5000${msg.image}`}
+                                            src={`${API_URL}${msg.image}`}
                                             className="inline-block max-w-[200px] mt-1 border rounded"
                                         />
                                     </>
