@@ -334,7 +334,7 @@ export default function ChatPage() {
                     {/* text input */}
                     <div className="flex-1 h-full">
                         <input
-                            className="w-full h-full px-3 text-white"
+                            className="w-full h-full px-3 text-white border-2  border-gray-700"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
                             onKeyPress={handleKeyPress}
