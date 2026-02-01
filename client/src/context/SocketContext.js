@@ -22,7 +22,8 @@ export const SocketProvider = ({ children }) => {
             socket.disconnect();
         }
 
-        const newSocket = io("http://localhost:5000", {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL;
+        const newSocket = io(API_URL, {
             auth: { token },
         });
 
