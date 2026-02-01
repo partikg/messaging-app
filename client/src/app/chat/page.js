@@ -321,7 +321,7 @@ export default function ChatPage() {
                 <div className="h-[70px] flex items-center gap-3 px-4 border border-gray-700">
 
                     {/* image input */}
-                    <label className="px-3 py-2 border-2 cursor-pointer">
+                    <label className="px-3 py-2 border-2 cursor-pointer flex items-center justify-center">
                         Image
                         <input
                             type="file"
@@ -332,8 +332,9 @@ export default function ChatPage() {
                     </label>
 
                     {/* text input */}
-                    <div className="flex-1 border-2 px-4 py-2">
+                    <div className="flex-1 border-2 flex items-center px-3 h-full">
                         <input
+                            className="w-full h-full text-white"
                             value={text}
                             onChange={(e) => setText(e.target.value)}
                             onKeyPress={handleKeyPress}
@@ -343,8 +344,8 @@ export default function ChatPage() {
 
 
                     {/* send button */}
-                    <div className="px-4 py-2 border-2 text-center">
-                        <button onClick={handleSend}>Send</button>
+                    <div className="px-4 py-2 border-2 flex items-center justify-center h-full">
+                        <button onClick={handleSend} className="bg-green-600 text-white px-4 py-2">Send</button>
                     </div>
 
                 </div>
