@@ -11,11 +11,10 @@ router.post('/', protect, async (req, res) => {
             return res.status(400).json({ message: "userId required" });
         }
 
-        // check existing chat
         let chat = await Chat.findOne({
             isGroupChat: false,
             users: { $all: [req.user._id, userId] }
-        });
+        }).populate("users", "name email");
 
         if (chat) {
             return res.json(chat);
@@ -25,6 +24,8 @@ router.post('/', protect, async (req, res) => {
             users: [req.user._id, userId],
             isGroupChat: false
         });
+
+        chat = await chat.populate("users", "name email");
 
         res.status(201).json(chat);
 
@@ -37,7 +38,7 @@ router.post('/', protect, async (req, res) => {
 
 router.get('/', protect, async (req, res) => {
     try {
-        const chats = await Chat.find({ users: req.user._id }).populate('users', 'name email');
+        const chats = await Chat.find({ users: req.user._id }).populate("users", "name email");
 
         res.json(chats);
     } catch (err) {

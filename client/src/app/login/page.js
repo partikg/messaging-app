@@ -21,7 +21,6 @@ export default function LoginPage() {
                 { email, password }
             );
             localStorage.setItem("token", res.data.token);
-            // router.push("/chat");
             window.location.href = "/chat";
         } catch (err) {
             console.log(err);

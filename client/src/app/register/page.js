@@ -1,6 +1,5 @@
 "use client";
 
-
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -24,7 +23,7 @@ export default function RegisterPage() {
             );
 
             localStorage.setItem("token", res.data.token);
-            router.push("/chat");
+            window.location.href = "/chat";
         } catch (err) {
             alert(err.response?.data?.message || "Register failed");
         }

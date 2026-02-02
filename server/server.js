@@ -82,7 +82,10 @@ io.on('connection', (socket) => {
             const fullMessage = await Message.findById(message._id)
                 .populate("sender", "name email");
 
-            io.to(chatId).emit("receiveMessage", fullMessage);
+            io.to(chatId).emit(
+                "receiveMessage",
+                JSON.parse(JSON.stringify(fullMessage))
+            );
 
             console.log("Full message sender:", fullMessage.sender);
 

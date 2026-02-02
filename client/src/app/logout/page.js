@@ -10,7 +10,6 @@ export default function LogoutButton() {
     const logout = () => {
         if (socket) socket.disconnect();
         localStorage.removeItem("token");
-        // router.push("/login");
         window.location.href = "/login";
     };
 

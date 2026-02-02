@@ -22,8 +22,6 @@ export default function ChatPage() {
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-    // const chatId = "6960fe42e8af2d609cb551ab";
-
     useEffect(() => {
         const token = localStorage.getItem("token");
 
@@ -196,13 +194,25 @@ export default function ChatPage() {
             { headers: { Authorization: `Bearer ${token}` } }
         );
 
+        const otherUser = searchResults.find(
+            u => String(u._id) === String(otherUserId)
+        );
+
         setChats(prev => {
             const filtered = prev.filter(c => c._id !== res.data._id);
-            return [res.data, ...filtered];
+            return [
+                {
+                    ...res.data,
+                    users: [otherUser, { _id: userId }]
+                },
+                ...filtered
+            ];
         });
 
         setSelectedChatId(res.data._id);
-        setChatUser(res.data.users.find(u => u._id !== userId));
+        setChatUser(otherUser);
+        setSearchTerm("");
+        setSearchResults([]);
     };
 
     return (
@@ -259,7 +269,6 @@ export default function ChatPage() {
                                 <div className="w-[40px] h-[40px] bg-gray-400 rounded-full" />
                                 <div>
                                     <h2 className="text-white text-md font-semibold">{otherUser?.name}</h2>
-                                    <p className="text-gray-300 text-sm">{chat.latestMessage?.content || "No messages yet"}</p>
                                 </div>
                             </div>
                         );
@@ -341,11 +350,8 @@ export default function ChatPage() {
                             placeholder="type message" />
                     </div>
 
-
-
                     {/* send button */}
                     <button onClick={handleSend} className="w-24 h-full bg-green-600 text-white">Send</button>
-
 
                 </div>
 
