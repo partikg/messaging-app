@@ -4,7 +4,7 @@ This is a real-time chat application built with Node.js, Socket.io, and Next.js.
 
 -----------------------------------------------
 
-Vercel Link: messaging-app-chat.vercel.app
+Vercel Link: messaging-chat-app-eight.vercel.app
 
 -----------------------------------------------
 
